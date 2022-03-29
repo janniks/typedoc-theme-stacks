@@ -1,0 +1,23 @@
+{
+  "name": "@janniks/typedoc-theme-stacks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "prettier": "@stacks/prettier-config",
+  "keywords": [
+    "typedoc-theme"
+  ],
+  "scripts": {
+    "build": "esbuild src/index.tsx --bundle --external:typedoc --external:vscode-oniguruma --external:typescript --platform=node --outfile=dist/index.js --analyze=verbose --log-level=verbose"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@stacks/prettier-config": "^0.0.10",
+    "esbuild": "^0.14.18",
+    "typedoc": "^0.22.11"
+  },
+  "peerDependencies": {
+    "typedoc": "^0.22.11"
+  }
+}
