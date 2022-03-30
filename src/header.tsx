@@ -28,7 +28,9 @@ export default (context: DefaultThemeRenderContext, options: Options) => {
                   {props.project.name}
                 </a>
 
-                <span class="title-version">{options.getValue(VERSION_DECLARATION)}</span>
+                {options.getValue(VERSION_DECLARATION) && (
+                  <span class="title-version">{options.getValue(VERSION_DECLARATION)}</span>
+                )}
               </div>
 
               <div class="table-cell" id="tsd-widgets">
