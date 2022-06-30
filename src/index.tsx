@@ -83,6 +83,9 @@ export function load(app: Application) {
           span.title-version {
             background: #4d0082;
           }
+          .light span.title-version {
+            background: #f2dfff;
+          }
         }
         .dark span.title-version {
           background: #4d0082;
