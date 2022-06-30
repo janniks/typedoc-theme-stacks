@@ -60,7 +60,7 @@ export function load(app: Application) {
           content: none;
         }
         span.title-version {
-          background: #4d0082;
+          background: #f2dfff;
           border: 1px solid #9700ff;
           border-radius: 3px;
           font-size: 12px;
@@ -71,6 +71,21 @@ export function load(app: Application) {
         #tsd-search.has-focus span.title-version {
           opacity: 0;
           z-index: 0;
+        }
+        dl.tsd-comment-tags dd {
+          margin: 3px 0 10px 0;
+        }
+        dl.tsd-comment-tags pre {
+          border-radius: 5px;
+          margin-bottom: 4px;
+        }
+        @media (prefers-color-scheme: dark) {
+          span.title-version {
+            background: #4d0082;
+          }
+        }
+        .dark span.title-version {
+          background: #4d0082;
         }
       `}
     </style>
