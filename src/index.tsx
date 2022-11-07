@@ -43,7 +43,7 @@ export function load(app: Application) {
           margin: 0.5em 0;
         }
         .tsd-typography blockquote {
-          color: #c6c9cf;
+          color: var(--color-text-aside);
         }
         .tsd-navigation.primary a {
           padding: 0.4375rem 0.5rem;
@@ -64,10 +64,10 @@ export function load(app: Application) {
           width: 8px;
           height: 8px;
           border-radius: 6px;
-          background-color: #464a53;
+          background-color: var(--color-accent);
         }
         .current span.module-dot {
-          background-color: #60aefc;
+          background-color: var(--color-link);
         }
         .tsd-navigation.primary ul li a:hover span.module-dot, .tsd-navigation.primary li.selected a span.module-dot {
           border: 4px solid #9494ff;
@@ -75,6 +75,16 @@ export function load(app: Application) {
         .menu-sticky-wrap {
           position: initial;
           overflow: initial;
+        }
+        .container-main {
+          display: grid;
+          grid-template-columns: 3fr 1fr;
+        }
+        .container.container-main * {
+          min-width: 0px;
+        }
+        .col-4, .col-8 {
+          max-width: 100%;
         }
 
         .tsd-typography a {
@@ -164,6 +174,11 @@ export function load(app: Application) {
           margin-bottom: 1.7142857em;
           border-radius: .375rem;
           padding:.8571429em 1.1428571em;
+          white-space: pre;
+          scrollbar-width: none;
+        }
+        .tsd-typography pre::-webkit-scrollbar {
+          display: none;
         }
         .tsd-typography pre code {
           border-width: 0;
