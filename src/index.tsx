@@ -84,6 +84,7 @@ export function load(app: Application) {
           min-width: 0px;
         }
         .col-4, .col-8 {
+          min-width: 100%;
           max-width: 100%;
         }
 
