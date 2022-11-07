@@ -1,97 +1,47 @@
-import { DefaultThemeRenderContext, JSX, Options, PageEvent, Reflection } from 'typedoc';
-import { hasTypeParameters, join } from '../node_modules/typedoc/dist/lib/output/themes/lib';
+// based on https://github.com/TypeStrong/typedoc/blob/1ab233b1cfc2e772648d3bfffed194e4773fa86d/src/lib/output/themes/default/partials/header.tsx
+import {
+  DeclarationReflection,
+  DefaultThemeRenderContext,
+  JSX,
+  PageEvent,
+  Reflection,
+  ReflectionKind,
+} from 'typedoc';
+import {
+  hasTypeParameters,
+  join,
+  renderFlags,
+} from '../node_modules/typedoc/dist/lib/output/themes/lib';
+import { Options } from '../node_modules/typedoc/dist/lib/utils';
 
-export const VERSION_DECLARATION = 'release-version';
-export const PROJECT_ROOT_TITLE = 'project-title';
-
-export default (context: DefaultThemeRenderContext, options: Options) => {
+export default (context: DefaultThemeRenderContext, _options: Options) => {
   return (props: PageEvent<Reflection>) => {
-    return (
-      <header>
-        <div class="tsd-page-toolbar">
-          <div class="container">
-            <div class="table-wrap">
-              <div class="table-cell" id="tsd-search" data-base={context.relativeURL('./')}>
-                <div class="field">
-                  <label for="tsd-search-field" class="tsd-widget search no-caption">
-                    Search
-                  </label>
-                  <input type="text" id="tsd-search-field" />
-                </div>
-
-                <ul class="results">
-                  <li class="state loading">Preparing search index...</li>
-                  <li class="state failure">The search index is not available</li>
-                </ul>
-
-                <a href={context.relativeURL('index.html')} class="title">
-                  {props.project.name}
-                </a>
-
-                {options.getValue(VERSION_DECLARATION) && (
-                  <span class="title-version">{options.getValue(VERSION_DECLARATION)}</span>
-                )}
-              </div>
-
-              <div class="table-cell" id="tsd-widgets">
-                <div id="tsd-filter">
-                  <a href="#" class="tsd-widget options no-caption" data-toggle="options">
-                    Options
-                  </a>
-                  <div class="tsd-filter-group">
-                    <div class="tsd-select" id="tsd-filter-visibility">
-                      <span class="tsd-select-label">All</span>
-                      <ul class="tsd-select-list">
-                        <li data-value="public">Public</li>
-                        <li data-value="protected">Public/Protected</li>
-                        <li data-value="private" class="selected">
-                          All
-                        </li>
-                      </ul>
-                    </div>{' '}
-                    <input type="checkbox" id="tsd-filter-inherited" checked={true} />
-                    <label class="tsd-widget" for="tsd-filter-inherited">
-                      Inherited
-                    </label>
-                    {!context.options.getValue('excludeExternals') && (
-                      <>
-                        <input type="checkbox" id="tsd-filter-externals" checked={true} />
-                        <label class="tsd-widget" for="tsd-filter-externals">
-                          Externals
-                        </label>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <a href="#" class="tsd-widget menu no-caption" data-toggle="menu">
-                  Menu
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tsd-page-title">
-          <div class="container">
-            {<ul class="tsd-breadcrumb">{context.breadcrumb(props.model)}</ul>}
-            <h1>
-              {props.model.kindString && props.model.kindString !== 'Project'
-                ? `${props.model.kindString?.replace('Module', 'Package') ?? ''} ${
-                    props.model.name
-                  }`
-                : context.options.getValue(PROJECT_ROOT_TITLE)}
-              {hasTypeParameters(props.model) && (
-                <>
-                  {'<'}
-                  {join(', ', props.model.typeParameters, item => item.name)}
-                  {'>'}
-                </>
-              )}
-            </h1>
-          </div>
-        </div>
-      </header>
-    );
+    return header(context, props);
   };
 };
+
+export function header(context: DefaultThemeRenderContext, props: PageEvent<Reflection>) {
+  const HeadingLevel = props.model.isProject() ? 'h2' : 'h1';
+  const kindString =
+    props.model.kind === ReflectionKind.Module ? 'Package' : props.model.kindString;
+  return (
+    <div class="tsd-page-title">
+      {!!props.model.parent && <ul class="tsd-breadcrumb">{context.breadcrumb(props.model)}</ul>}
+      <HeadingLevel>
+        {props.model.kind !== ReflectionKind.Project && `${kindString ?? ''} `}
+        {props.model.name}
+        {/* {props.model instanceof DeclarationReflection &&
+          props.model.version !== undefined &&
+          ` - v${props.model.version}`} */}
+        {hasTypeParameters(props.model) && (
+          <>
+            {'<'}
+            {join(', ', props.model.typeParameters, item => item.name)}
+            {'>'}
+          </>
+        )}
+        {/* {renderFlags(props.model.flags, props.model.comment)} */}
+      </HeadingLevel>
+    </div>
+  );
+}

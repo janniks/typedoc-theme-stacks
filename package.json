@@ -1,6 +1,6 @@
 {
   "name": "@janniks/typedoc-theme-stacks",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/index.js",
   "prettier": "@stacks/prettier-config",
@@ -16,9 +16,9 @@
   "devDependencies": {
     "@stacks/prettier-config": "^0.0.10",
     "esbuild": "^0.14.18",
-    "typedoc": "^0.22.11"
+    "typedoc": "^0.23.20"
   },
   "peerDependencies": {
-    "typedoc": "^0.22.11"
+    "typedoc": "^0.23.20"
   }
 }

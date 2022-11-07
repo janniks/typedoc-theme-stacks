@@ -1,16 +1,8 @@
 // based on https://github.com/Gerrit0/typedoc-custom-theme-demo/blob/951adb8aa9914ea09d53919cea77e90a5ff91806/src/index.tsx
-import {
-  Application,
-  DefaultTheme,
-  DefaultThemeRenderContext,
-  JSX,
-  Options,
-  ParameterType,
-} from 'typedoc';
+import { Application, DefaultTheme, DefaultThemeRenderContext, JSX, Options } from 'typedoc';
 
-import makeHeader, { PROJECT_ROOT_TITLE, VERSION_DECLARATION } from './header';
-import makeNavigation, { PACKAGE_PREFIX } from './navigation';
-import makeBreadcrumb from './breadcrumb';
+import makeHeader from './header';
+import makeNavigation from './navigation';
 
 export class StacksThemeContext extends DefaultThemeRenderContext {
   constructor(theme: DefaultTheme, options: Options) {
@@ -18,7 +10,6 @@ export class StacksThemeContext extends DefaultThemeRenderContext {
 
     this.header = makeHeader(this, options);
     this.navigation = makeNavigation(this, options);
-    this.breadcrumb = makeBreadcrumb(this, options);
   }
 }
 
@@ -32,63 +23,237 @@ export class StacksTheme extends DefaultTheme {
 }
 
 export function load(app: Application) {
-  app.options.addDeclaration({
-    name: VERSION_DECLARATION,
-    type: ParameterType.String,
-    defaultValue: '',
-    help: 'The version tag of the rendered docs',
-  });
-  app.options.addDeclaration({
-    name: PACKAGE_PREFIX,
-    type: ParameterType.String,
-    defaultValue: '',
-    help: 'The @ package prefix used for all packages in a monorepo',
-  });
-  app.options.addDeclaration({
-    name: PROJECT_ROOT_TITLE,
-    type: ParameterType.String,
-    defaultValue: 'Library Reference',
-    help: 'The title used for the project root',
-  });
   app.renderer.hooks.on('head.end', () => (
     <style>
       {`
-        .tsd-navigation.primary ul li a.tsd-kind-icon {
-          padding-left: 25px;
+        body {
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
-        .tsd-breadcrumb li:last-child:after {
-          content: none;
+        pre {
+          border: initial !important;
+          border-radius: 8px !important;
         }
-        span.title-version {
-          background: #f2dfff;
-          border: 1px solid #9700ff;
-          border-radius: 3px;
-          font-size: 12px;
-          font-weight: normal;
-          padding: 1px 4px;
-          margin-left: 3px;
+        code {
+          border-radius: 3px !important;
         }
-        #tsd-search.has-focus span.title-version {
-          opacity: 0;
-          z-index: 0;
+        .tsd-typography h1 {
+          display: none;
         }
-        dl.tsd-comment-tags dd {
-          margin: 3px 0 10px 0;
+        .tsd-typography p {
+          margin: 0.5em 0;
         }
-        dl.tsd-comment-tags pre {
-          border-radius: 5px;
-          margin-bottom: 4px;
+        .tsd-typography blockquote {
+          color: #c6c9cf;
         }
-        @media (prefers-color-scheme: dark) {
-          span.title-version {
-            background: #4d0082;
-          }
-          .light span.title-version {
-            background: #f2dfff;
-          }
+        .tsd-navigation.primary a {
+          padding: 0.4375rem 0.5rem;
         }
-        .dark span.title-version {
-          background: #4d0082;
+        .tsd-theme-toggle {
+          padding-bottom: 12px;
+        }
+        .tsd-kind-module {
+          position: relative;
+        }
+        .tsd-navigation.primary * {
+          border-left: none !important;
+        }
+        span.module-dot {
+          top: 12.25px;
+          position: absolute;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 6px;
+          background-color: #464a53;
+        }
+        .current span.module-dot {
+          background-color: #60aefc;
+        }
+        .tsd-navigation.primary ul li a:hover span.module-dot, .tsd-navigation.primary li.selected a span.module-dot {
+          border: 4px solid #9494ff;
+        }
+        .menu-sticky-wrap {
+          position: initial;
+          overflow: initial;
+        }
+
+        .tsd-typography a {
+          text-decoration: underline;
+          font-weight:500;
+        }
+        .tsd-typography strong {
+          font-weight:600;
+        }
+        .tsd-typography ol > li {
+          position: relative;
+          padding-left:1.75em;
+        }
+        .tsd-typography ol > li:before {
+          position: absolute;
+          font-weight: 400;
+          left:0;
+        }
+        .tsd-typography ul > li {
+          position: relative;
+          padding-left:1.75em;
+        }
+        .tsd-typography ul > li:before {
+          content: "";
+          position: absolute;
+          border-radius: 50%;
+          width: .375em;
+          height: .375em;
+          top: calc(.875em - .1875em);
+          left:.25em;
+        }
+        .tsd-typography hr {
+          border-top-width: 1px;
+          margin-top: 3em;
+          margin-bottom: 3em;
+        }
+        .tsd-typography blockquote {
+          font-weight: 500;
+          font-style: italic;
+          border-left-width: .25rem;
+          margin-top: 1.6em;
+          margin-bottom: 1.6em;
+          padding-left:1em;
+        }
+        .tsd-typography h1 {
+          font-weight: 800;
+          font-size: 2.25em;
+          margin-top: 0;
+          margin-bottom: .8888889em;
+          line-height:1.1111111;
+        }
+        .tsd-typography h2 {
+          font-weight: 700;
+          font-size: 1.5em;
+          margin-top: 2em;
+          margin-bottom: 1em;
+          line-height:1.3333333;
+        }
+        .tsd-typography h3 {
+          font-size: 1.25em;
+          margin-top: 1.6em;
+          margin-bottom: .6em;
+          line-height:1.6;
+        }
+        .tsd-typography h3,.tsd-typography h4 {
+          font-weight:600;
+        }
+        .tsd-typography h4 {
+          margin-top: 1.5em;
+          margin-bottom: .5em;
+          line-height:1.5;
+        }
+        .tsd-typography figure figcaption {
+          font-size: .875em;
+          line-height: 1.4285714;
+          margin-top:.8571429em;
+        }
+        .tsd-typography code {
+          font-weight: 600;
+          font-size:.875em;
+        }
+        .tsd-typography pre {
+          overflow-x: auto;
+          font-size: .875em;
+          line-height: 1.7142857;
+          margin-top: 1.7142857em;
+          margin-bottom: 1.7142857em;
+          border-radius: .375rem;
+          padding:.8571429em 1.1428571em;
+        }
+        .tsd-typography pre code {
+          border-width: 0;
+          border-radius: 0;
+          padding: 0;
+          font-weight: 400;
+          font-size: inherit;
+          font-family: inherit;
+          line-height:inherit;
+        }
+        .tsd-typography pre code:after,.tsd-typography pre code:before {
+          content:none;
+        }
+        .tsd-typography table {
+          width: 100%;
+          table-layout: auto;
+          text-align: left;
+          margin-top: 2em;
+          margin-bottom: 2em;
+          font-size: .875em;
+          line-height:1.7142857;
+        }
+        .tsd-typography thead {
+          font-weight: 600;
+          border-bottom-width: 1px;
+        }
+        .tsd-typography thead th {
+          vertical-align: bottom;
+          padding-right: .5714286em;
+          padding-bottom: .5714286em;
+          padding-left:.5714286em;
+        }
+        .tsd-typography tbody tr {
+          border-bottom-width: 1px;
+        }
+        .tsd-typography tbody tr:last-child {
+          border-bottom-width:0;
+        }
+        .tsd-typography tbody td {
+          vertical-align: top;
+          padding:.5714286em;
+        }
+        .tsd-typography {
+          font-size: 1rem;
+          line-height:1.5;
+        }
+        .tsd-typography p {
+          margin-top: 1.25em;
+          margin-bottom:1.25em;
+        }
+        .tsd-typography figure,.tsd-typography img,.tsd-typography video {
+          margin-top: 2em;
+          margin-bottom:2em;
+        }
+        .tsd-typography figure > * {
+          margin-top: 0;
+          margin-bottom:0;
+        }
+        .tsd-typography h2 code {
+          font-size:.875em;
+        }
+        .tsd-typography h3 code {
+          font-size:.9em;
+        }
+        .tsd-typography thead th:first-child {
+          padding-left:0;
+        }
+        .tsd-typography thead th:last-child {
+          padding-right:0;
+        }
+        .tsd-typography tbody td:first-child {
+          padding-left:0;
+        }
+        .tsd-typography tbody td:last-child {
+          padding-right:0;
+        }
+        .tsd-typography > :first-child {
+          margin-top:0;
+        }
+        .tsd-typography > :last-child {
+          margin-bottom:0;
+        }
+        .tsd-typography address {
+          font-style:inherit;
+        }
+        .tsd-typography a {
+          font-weight:inherit;
+        }
+        .tsd-typography blockquote {
+          quotes:none;
         }
       `}
     </style>
